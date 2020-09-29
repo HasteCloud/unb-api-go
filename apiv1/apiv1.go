@@ -222,25 +222,29 @@ func (u *UserData) GetBalance(guild, user string) (UserObj, error) {
 
 func (u *UserData) SetBalance(guild, user string, cash, bank, reason interface{}) (UserObj, error) {
 	var payloadTypes = make(map[string]interface{})
-	switch x := cash; x.(type) {
-	case string:
-		if cash == "Infinity" {
-			payloadTypes["Cash"] = "Infinity"
-		} else if cash == "-Infinity" {
-			payloadTypes["Cash"] = "-Infinity"
+	if cash != nil {
+		switch x := cash; x.(type) {
+		case string:
+			if cash == "Infinity" {
+				payloadTypes["Cash"] = "Infinity"
+			} else if cash == "-Infinity" {
+				payloadTypes["Cash"] = "-Infinity"
+			}
+		case int:
+			payloadTypes["Cash"] = cash
 		}
-	case int:
-		payloadTypes["Cash"] = cash
 	}
-	switch x := bank; x.(type) {
-	case string:
-		if bank == "Infinity" {
-			payloadTypes["Bank"] = "Infinity"
-		} else if bank == "-Infinity" {
-			payloadTypes["Bank"] = "-Infinity"
+	if bank != nil {
+		switch x := bank; x.(type) {
+		case string:
+			if bank == "Infinity" {
+				payloadTypes["Bank"] = "Infinity"
+			} else if bank == "-Infinity" {
+				payloadTypes["Bank"] = "-Infinity"
+			}
+		case int:
+			payloadTypes["Bank"] = bank
 		}
-	case int:
-		payloadTypes["Bank"] = bank
 	}
 	switch x := reason; x.(type) {
 	case string:
