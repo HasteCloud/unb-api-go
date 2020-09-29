@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-type userData struct {
+type UserData struct {
 	token  string
 	client *http.Client
 }
@@ -32,7 +32,7 @@ type check struct {
 	Up   bool
 }
 
-type userObj struct {
+type UserObj struct {
 	Rank          int    `json:"rank"`
 	UserID        string `json:"user_id"`
 	Cash          int    `json:"cash"`
@@ -71,7 +71,7 @@ type userObjPut struct {
 	Reason interface{} `json:"reason,omitempty"`
 }
 
-func (u *userData) Request(protocol, url string, payload []byte) ([]byte, error) {
+func (u *UserData) Request(protocol, url string, payload []byte) ([]byte, error) {
 	b := bytes.NewBuffer(payload)
 	req, err := http.NewRequest(protocol, "https://unbelievable.pizza/api/v1"+url, b)
 	if err != nil {
@@ -109,12 +109,12 @@ func (u *userData) Request(protocol, url string, payload []byte) ([]byte, error)
 	return respo, err
 }
 
-func fixTypesToStruct(data []byte) (userObj, error) {
-	balUser := userObj{}
+func fixTypesToStruct(data []byte) (UserObj, error) {
+	balUser := UserObj{}
 	var objmap map[string]interface{}
 	err := json.Unmarshal(data, &objmap)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 	_, totalIsString := objmap["total"].(string)
 	if totalIsString {
@@ -168,24 +168,24 @@ func fixTypesToStruct(data []byte) (userObj, error) {
 
 	err = json.Unmarshal([]byte(b), &balUser)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 
 	return balUser, err
 }
 
-func New(token string) userData {
+func New(token string) UserData {
 	client := &http.Client{}
-	u := userData{token, client}
+	u := UserData{token, client}
 	return u
 }
 
-func Custom(token string, client *http.Client) userData {
-	u := userData{token, client}
+func Custom(token string, client *http.Client) UserData {
+	u := UserData{token, client}
 	return u
 }
 
-func (u *userData) Check() (check, error) {
+func (u *UserData) Check() (check, error) {
 	start := time.Now()
 	data, err := u.Request("GET", "", nil)
 	elapsed := time.Since(start)
@@ -208,19 +208,19 @@ func (u *userData) Check() (check, error) {
 	return check{time.Since(time.Now()), false}, errors.New("Cannot connect to API url")
 }
 
-func (u *userData) GetBalance(guild, user string) (userObj, error) {
+func (u *UserData) GetBalance(guild, user string) (UserObj, error) {
 	data, err := u.Request("GET", fmt.Sprintf("/guilds/%v/users/%v", guild, user), nil)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 	userBal, err := fixTypesToStruct(data)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 	return userBal, err
 }
 
-func (u *userData) SetBalance(guild, user string, cash, bank, reason interface{}) (userObj, error) {
+func (u *UserData) SetBalance(guild, user string, cash, bank, reason interface{}) (UserObj, error) {
 	var payloadTypes = make(map[string]interface{})
 	switch x := cash; x.(type) {
 	case string:
@@ -250,20 +250,20 @@ func (u *userData) SetBalance(guild, user string, cash, bank, reason interface{}
 	}
 	value, err := json.Marshal(payloadTypes)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 	data, err := u.Request("PUT", fmt.Sprintf("/guilds/%v/users/%v", guild, user), value)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 	userBal, err := fixTypesToStruct(data)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 	return userBal, err
 }
 
-func (u *userData) UpdateBalance(guild, user string, cash, bank int, reason interface{}) (userObj, error) {
+func (u *UserData) UpdateBalance(guild, user string, cash, bank int, reason interface{}) (UserObj, error) {
 	var payloadTypes = make(map[string]interface{})
 	payloadTypes["Cash"] = cash
 	payloadTypes["Bank"] = bank
@@ -275,42 +275,42 @@ func (u *userData) UpdateBalance(guild, user string, cash, bank int, reason inte
 	}
 	value, err := json.Marshal(payloadTypes)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 	data, err := u.Request("PATCH", fmt.Sprintf("/guilds/%v/users/%v", guild, user), value)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 	userBal, err := fixTypesToStruct(data)
 	if err != nil {
-		return userObj{}, err
+		return UserObj{}, err
 	}
 	return userBal, err
 }
 
-func (u *userData) Leaderboard(guild string) ([]userObj, error) {
+func (u *UserData) Leaderboard(guild string) ([]UserObj, error) {
 	var leaderboardRaw []userObjRaw
-	var leaderboard []userObj
+	var leaderboard []UserObj
 
 	data, err := u.Request("GET", fmt.Sprintf("/guilds/%v/users", guild), nil)
 	if err != nil {
-		return []userObj{}, err
+		return []UserObj{}, err
 	}
 
 	if err := json.Unmarshal(data, &leaderboardRaw); err != nil {
-		return []userObj{}, err
+		return []UserObj{}, err
 	}
 	for _, v := range leaderboardRaw {
 		value := fmt.Sprintf(`{"rank":"%v","user_id":"%v","cash":"%v","bank":"%v","total":"%v"}`, v.Rank, v.UserID, v.Cash, v.Bank, v.Total)
 		user, err := fixTypesToStruct([]byte(value))
 		if err != nil {
-			return []userObj{}, err
+			return []UserObj{}, err
 		}
 		leaderboard = append(leaderboard, user)
 	}
 
 	if err != nil {
-		return []userObj{}, err
+		return []UserObj{}, err
 	}
 	return leaderboard, err
 }
