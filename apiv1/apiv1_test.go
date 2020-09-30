@@ -181,7 +181,7 @@ func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithInfiniteBa
 	equals(t, UserObj{0, "398197113495748626", 0, true, false, 0, true, false, 0, true, false}, data)
 }
 
-func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegitiveInfiniteCash(t *testing.T) {
+func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegativeInfiniteCash(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":"-Infinity","bank":200,"total":"-Infinity"}`)
 
 	api := Custom("token", client)
@@ -190,7 +190,7 @@ func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegitiveIn
 	equals(t, UserObj{0, "398197113495748626", 0, false, true, 200, false, false, 0, false, true}, data)
 }
 
-func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegitiveInfiniteBank(t *testing.T) {
+func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegativeInfiniteBank(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":25,"bank":"-Infinity","total":"-Infinity"}`)
 
 	api := Custom("token", client)
@@ -199,7 +199,7 @@ func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegitiveIn
 	equals(t, UserObj{0, "398197113495748626", 25, false, false, 0, false, true, 0, false, true}, data)
 }
 
-func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegitiveInfiniteBankAndCash(t *testing.T) {
+func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegativeInfiniteBankAndCash(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":"-Infinity","bank":"-Infinity","total":"-Infinity"}`)
 
 	api := Custom("token", client)
@@ -208,7 +208,7 @@ func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegitiveIn
 	equals(t, UserObj{0, "398197113495748626", 0, false, true, 0, false, true, 0, false, true}, data)
 }
 
-func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegitiveInfiniteBankAndInfiniteCash(t *testing.T) {
+func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegativeInfiniteBankAndInfiniteCash(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":"Infinity","bank":"-Infinity","total":0}`)
 
 	api := Custom("token", client)
@@ -217,7 +217,7 @@ func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithNegitiveIn
 	equals(t, UserObj{0, "398197113495748626", 0, true, false, 0, false, true, 0, false, false}, data)
 }
 
-func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithInfiniteBankAndNegitiveInfiniteCash(t *testing.T) {
+func TestGetBalanceHandlesDataOnSuccessfulFetchCorrectlyWithNoRankWithInfiniteBankAndNegativeInfiniteCash(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":"-Infinity","bank":"Infinity","total":0}`)
 
 	api := Custom("token", client)
@@ -290,7 +290,7 @@ func TestSetBalanceWithOnlyBankInfiniteData(t *testing.T) {
 	equals(t, UserObj{0, "398197113495748626", 50, false, false, 0, true, false, 0, true, false}, data)
 }
 
-func TestSetBalanceWithOnlyCashNegitiveInfiniteData(t *testing.T) {
+func TestSetBalanceWithOnlyCashNegativeInfiniteData(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":"-Infinity","bank":502,"total":"-Infinity","found":true}`)
 
 	api := Custom("token", client)
@@ -299,7 +299,7 @@ func TestSetBalanceWithOnlyCashNegitiveInfiniteData(t *testing.T) {
 	equals(t, UserObj{0, "398197113495748626", 0, false, true, 502, false, false, 0, false, true}, data)
 }
 
-func TestSetBalanceWithOnlyBankNegitiveInfiniteData(t *testing.T) {
+func TestSetBalanceWithOnlyBankNegativeInfiniteData(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":50,"bank":"-Infinity","total":"-Infinity","found":true}`)
 
 	api := Custom("token", client)
@@ -317,7 +317,7 @@ func TestSetBalanceWithAllInfiniteData(t *testing.T) {
 	equals(t, UserObj{0, "398197113495748626", 0, true, false, 0, true, false, 0, true, false}, data)
 }
 
-func TestSetBalanceWithAllNegitiveInfiniteData(t *testing.T) {
+func TestSetBalanceWithAllNegativeInfiniteData(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":"-Infinity","bank":"-Infinity","total":"-Infinity","found":true}`)
 
 	api := Custom("token", client)
@@ -326,7 +326,7 @@ func TestSetBalanceWithAllNegitiveInfiniteData(t *testing.T) {
 	equals(t, UserObj{0, "398197113495748626", 0, false, true, 0, false, true, 0, false, true}, data)
 }
 
-func TestSetBalanceWithCashInfiniteCashNegitiveInfinite(t *testing.T) {
+func TestSetBalanceWithCashInfiniteCashNegativeInfinite(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":"-Infinity","bank":"Infinity","total":0,"found":true}`)
 
 	api := Custom("token", client)
@@ -335,7 +335,7 @@ func TestSetBalanceWithCashInfiniteCashNegitiveInfinite(t *testing.T) {
 	equals(t, UserObj{0, "398197113495748626", 0, false, true, 0, true, false, 0, false, false}, data)
 }
 
-func TestSetBalanceWithCashInfiniteBankNegitiveInfinite(t *testing.T) {
+func TestSetBalanceWithCashInfiniteBankNegativeInfinite(t *testing.T) {
 	client := setClient(200, "/guilds/411898639737421824/users/398197113495748626", `{"user_id":"398197113495748626","cash":"Infinity","bank":"-Infinity","total":0,"found":true}`)
 
 	api := Custom("token", client)
