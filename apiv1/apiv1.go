@@ -226,31 +226,31 @@ func (u *UserData) SetBalance(guild, user string, cash, bank, reason interface{}
 		switch x := cash; x.(type) {
 		case string:
 			if cash == "Infinity" {
-				payloadTypes["Cash"] = "Infinity"
+				payloadTypes["cash"] = "Infinity"
 			} else if cash == "-Infinity" {
-				payloadTypes["Cash"] = "-Infinity"
+				payloadTypes["cash"] = "-Infinity"
 			}
 		case int:
-			payloadTypes["Cash"] = cash
+			payloadTypes["cash"] = cash
 		}
 	}
 	if bank != nil {
 		switch x := bank; x.(type) {
 		case string:
 			if bank == "Infinity" {
-				payloadTypes["Bank"] = "Infinity"
+				payloadTypes["bank"] = "Infinity"
 			} else if bank == "-Infinity" {
-				payloadTypes["Bank"] = "-Infinity"
+				payloadTypes["bank"] = "-Infinity"
 			}
 		case int:
-			payloadTypes["Bank"] = bank
+			payloadTypes["bank"] = bank
 		}
 	}
 	switch x := reason; x.(type) {
 	case string:
-		payloadTypes["Reason"] = reason
+		payloadTypes["reason"] = reason
 	case nil:
-		payloadTypes["Reason"] = "No reason provided."
+		payloadTypes["reason"] = "No reason provided."
 	}
 	value, err := json.Marshal(payloadTypes)
 	if err != nil {
@@ -269,13 +269,13 @@ func (u *UserData) SetBalance(guild, user string, cash, bank, reason interface{}
 
 func (u *UserData) UpdateBalance(guild, user string, cash, bank int, reason interface{}) (UserObj, error) {
 	var payloadTypes = make(map[string]interface{})
-	payloadTypes["Cash"] = cash
-	payloadTypes["Bank"] = bank
+	payloadTypes["cash"] = cash
+	payloadTypes["bank"] = bank
 	switch x := reason; x.(type) {
 	case string:
-		payloadTypes["Reason"] = reason
+		payloadTypes["reason"] = reason
 	case nil:
-		payloadTypes["Reason"] = "No reason provided."
+		payloadTypes["reason"] = "No reason provided."
 	}
 	value, err := json.Marshal(payloadTypes)
 	if err != nil {
