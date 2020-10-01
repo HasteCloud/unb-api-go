@@ -223,6 +223,9 @@ func (u *UserData) GetBalance(guild, user string) (UserObj, error) {
 
 func (u *UserData) SetBalance(guild, user string, cash, bank, reason interface{}) (UserObj, error) {
 	var payloadTypes = make(map[string]interface{})
+
+	log.Printf("SetBalance\n\tGuild=%s\n\tUser=%s\n\tCash=%v\n\tBank=%v\n\n", guild, user, cash, bank)
+
 	if cash != nil {
 		switch x := cash; x.(type) {
 		case string:
@@ -235,6 +238,9 @@ func (u *UserData) SetBalance(guild, user string, cash, bank, reason interface{}
 			payloadTypes["Cash"] = cash
 		}
 	}
+
+	log.Printf("Parsed cash: %v\n", payloadTypes["cash"])
+
 	if bank != nil {
 		switch x := bank; x.(type) {
 		case string:
