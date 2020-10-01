@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -256,6 +257,9 @@ func (u *UserData) SetBalance(guild, user string, cash, bank, reason interface{}
 	if err != nil {
 		return UserObj{}, err
 	}
+
+	log.Printf("%#v", value)
+
 	data, err := u.Request("PUT", fmt.Sprintf("/guilds/%v/users/%v", guild, user), value)
 	if err != nil {
 		return UserObj{}, err
@@ -264,6 +268,7 @@ func (u *UserData) SetBalance(guild, user string, cash, bank, reason interface{}
 	if err != nil {
 		return UserObj{}, err
 	}
+
 	return userBal, err
 }
 
